@@ -1,0 +1,17 @@
+@(accessToken: String)
+@import helper._
+@println("####scala html accss token######"+accessToken)
+
+@main("Select any one") {
+@form(routes.Dropbox.downloadFromFolder(accessToken), 'class -> "topRight") { 
+			<input type="submit" value="Click For Download" class="btn btn-danger">
+		}
+		
+		@form(routes.Dropbox.uploadToFolder(accessToken), 'class -> "topRight") { 
+			<input type="submit" value="Click For Upload" class="btn btn-danger">
+		}
+		
+		@form(routes.Dropbox.listDirectory(accessToken), 'class -> "topRight") { 
+			<input type="submit" value="Click to list all file and folder name" class="btn btn-danger">
+		}
+		}

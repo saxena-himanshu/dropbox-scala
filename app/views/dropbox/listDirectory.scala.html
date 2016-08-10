@@ -1,0 +1,10 @@
+@(children: List[com.dropbox.core.DbxEntry])
+
+<h1>All files and directory</h1>
+
+<ul>
+@for(child <- children) {
+    <li>@child.name : @child.toString()</li>
+}
+</ul>
+<a href="@routes.Dropbox.index()" class="btn btn-default">Home</a>
