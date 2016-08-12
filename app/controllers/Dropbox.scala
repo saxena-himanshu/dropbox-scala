@@ -82,5 +82,33 @@ object Dropbox extends Controller with CoreApi {
     Ok(views.html.dropbox.downloadFile(fileName))
   }
 
+  def downloadAllFileFromFolder(accessToken: String) = Action { request =>
+    implicit val auth: DbxAuthFinish = new DbxAuthFinish(accessToken, "", "")
+    val appPath2 = DropboxPath("/9AugFolderForReadAndWrite")
+    val remoteFile = DropboxPath("/9AugFolderForReadAndWrite/karra12.txt")
+    val children: List[DbxEntry] = (appPath2 children).children.asScala.toList
+    val fileNameList = children map { x =>
+      getDropBoxPath(x.name) downloadTo s"/home/himanshu/Downloads/testfile/drop2/${x.name}"
+      x.name
+    }
+    val fileName = fileNameList.toList
+    Ok(views.html.dropbox.downloadFiles(fileName))
+  }
+  
+  def uploadFilesToFolder(accesToken: String) = Action { request =>
+    implicit val auth: DbxAuthFinish = new DbxAuthFinish(accesToken, "", "")
+    val appPath = DropboxPath("/")
+     val allFileFromFolder = new java.io.File("/home/himanshu/Downloads/testfile/ csv/")
+    val files = allFileFromFolder.listFiles().map{x=>
+      new java.io.File(s"/home/himanshu/Downloads/testfile/ csv/${x.getName}") uploadTo DropboxPath(s"/akshay/${x.getName}")
+      x.getName
+    }
+    Ok(views.html.dropbox.uploadFiles(files.toList))
+  }
+
+  def getDropBoxPath(fileName: String): DropboxPath = {
+    val remoteFile = DropboxPath(s"/9AugFolderForReadAndWrite/${fileName}")
+    remoteFile
+  }
 }
 
